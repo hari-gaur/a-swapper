@@ -37,13 +37,12 @@ public class SuCommander {
 
 	}
 
-	protected void finalize() throws Throwable
-	{
+	protected void finalize() throws Throwable {
 		reader.close();
 		writer.close();
 		err.close();
-		super.finalize(); //not necessary if extending Object.
-	} 
+		super.finalize(); // not necessary if extending Object.
+	}
 
 	public void exec(String command) throws IOException {
 		writer.write((command + "\n").getBytes("ASCII"));
@@ -51,17 +50,17 @@ public class SuCommander {
 
 	/**
 	 * @return output
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public String get_output() throws IOException {
 		return get_output(null);
 	}
 
-
 	/**
-	 * @param what = what to wait for (if not there, endless loop will occur)
+	 * @param what
+	 *            = what to wait for (if not there, endless loop will occur)
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public String get_output(String what) throws IOException {
 		StringBuilder output = new StringBuilder();
@@ -77,7 +76,7 @@ public class SuCommander {
 				error.append((char) read);
 			}
 			if (what != null && output.toString().contains(what)) {
-				what = null;		
+				what = null;
 			}
 			if (what != null)
 				try {
