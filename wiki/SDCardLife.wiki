@@ -12,10 +12,10 @@ All information here haven't tested. It's only theoretical.
 
 == Lifespan ==
 
----
+----
 http://forum.xda-developers.com/showpost.php?p=3339079&postcount=43
 Considering the write cycles of recent flash products, the improvements in wear leveling logic and the further improvement in different file systems, it would take it a good year or two before there are some noticeable effects on the card.
----
+----
 
 == Expanding life ===
 
