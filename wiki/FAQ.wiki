@@ -1,0 +1,13 @@
+#summary Frequently asked questions
+#labels Featured,Phase-Support,Information
+
+= TOC =
+
+<wiki:toc max_depth="1" />
+
+= FAQ =
+== Program ==
+=== By how much will this shorten SD life? ===
+Take a look here: [SDCardLife]
+== Android ==
+== Future ==
