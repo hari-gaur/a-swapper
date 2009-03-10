@@ -1,0 +1,19 @@
+#summary Quick information about program settings
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+Program have 2 changeable settings - swap size and location. In program you can also change swappiness of system.
+
+= Details =
+
+==Swap size==
+
+Size of file for swapping. Here info for reading http://en.wikipedia.org/wiki/Swap_space
+
+==Location==
+
+Path where to place swap file (Locations buttons contains predefined paths, one is /sdcard/swapfile.swp, other is /system/sd/swapfile.swp - for those, who divided their sd cards for application sorage).
+
+==In-Program system settings==
+In program you have swappiness option - range 0-100 - how much you would like to swap. My tests showed that best performance/usability (for my sd+phone) is 32 MB swap and swappiness = 10. Your preferences can differ.
