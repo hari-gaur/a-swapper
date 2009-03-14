@@ -26,7 +26,7 @@
 				android:layout_height="wrap_content">
 				<TextView android:id="@+id/TextView01"
 					android:layout_height="wrap_content" android:layout_width="fill_parent"
-					android:textSize="22px" android:text="Swapiness"></TextView>
+					android:textSize="22px" android:text="Swappiness"></TextView>
 			</TableRow>
 			<TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content"
 				android:layout_height="60px" android:layout_gravity="center">

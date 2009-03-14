@@ -28,14 +28,10 @@ public class Swapper extends Activity implements OnClickListener, Runnable {
 	SharedPreferences	settings;
 	Button				startsettings;
 	SuCommander			su;
-
 	Button				swapoff;
-
 	Button				swapon_32;
 	EditText			swappiness;
-
 	String				swapPlace;
-
 	int					swapSize;
 
 	@Override
