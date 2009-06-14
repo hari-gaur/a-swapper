@@ -61,7 +61,8 @@ public class SwapperSettings extends Activity implements OnClickListener,
 		settings = getSharedPreferences("Swapper", 0);
 		swapIndicator.setText("" + settings.getInt("swapsize", 32));
 		swapSeekBar.setProgress(settings.getInt("swapsize", 32));
-
+		swapPlace.setText(settings.getString("swapplace",
+				"/sdcard/swapfile.swp"));
 		back = (ImageButton) findViewById(R.id.BackButton);
 		back.setOnClickListener(this);
 
@@ -70,7 +71,16 @@ public class SwapperSettings extends Activity implements OnClickListener,
 
 		setSystemSd = (Button) findViewById(R.id.setSystemSd);
 		setSystemSd.setOnClickListener(this);
+	}
 
+	@Override
+	public void onDestroy() {
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("swapplace", swapPlace.getText().toString());
+		editor.commit();
+		Intent i = new Intent(this, Swapper.class);
+		startActivity(i);
+		super.onDestroy();
 	}
 
 	@Override
@@ -91,4 +101,5 @@ public class SwapperSettings extends Activity implements OnClickListener,
 	public void onStopTrackingTouch(SeekBar arg0) {
 		// TODO Auto-generated method stub
 	}
+
 }
