@@ -1,4 +1,4 @@
-#Tue Mar 10 01:07:23 EET 2009
+#Sun Jun 14 22:36:04 EEST 2009
 eclipse.preferences.version=1
 org.eclipse.jdt.core.formatter.align_type_members_on_columns=true
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression=16
@@ -22,10 +22,10 @@ org.eclipse.jdt.core.formatter.alignment_for_superinterfaces_in_type_declaration
 org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_constructor_declaration=16
 org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration=16
 org.eclipse.jdt.core.formatter.blank_lines_after_imports=2
-org.eclipse.jdt.core.formatter.blank_lines_after_package=1
+org.eclipse.jdt.core.formatter.blank_lines_after_package=2
 org.eclipse.jdt.core.formatter.blank_lines_before_field=0
 org.eclipse.jdt.core.formatter.blank_lines_before_first_class_body_declaration=0
-org.eclipse.jdt.core.formatter.blank_lines_before_imports=2
+org.eclipse.jdt.core.formatter.blank_lines_before_imports=1
 org.eclipse.jdt.core.formatter.blank_lines_before_member_type=1
 org.eclipse.jdt.core.formatter.blank_lines_before_method=1
 org.eclipse.jdt.core.formatter.blank_lines_before_new_chunk=1

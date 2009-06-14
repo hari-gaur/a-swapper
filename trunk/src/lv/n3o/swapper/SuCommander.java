@@ -83,7 +83,7 @@ public class SuCommander implements Runnable {
 				read = err.read();
 				error.append((char) read);
 			}
-			if (what != null && output.toString().contains(what)) {
+			if ((what != null) && output.toString().contains(what)) {
 				output = new StringBuilder(output.toString().replace(what, ""));
 				what = null;
 			}

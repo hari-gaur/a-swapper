@@ -28,10 +28,14 @@ public class Swapper extends Activity implements OnClickListener, Runnable {
 	SharedPreferences	settings;
 	Button				startsettings;
 	SuCommander			su;
+
 	Button				swapoff;
+
 	Button				swapon_32;
 	EditText			swappiness;
+
 	String				swapPlace;
+
 	int					swapSize;
 
 	@Override
@@ -50,8 +54,9 @@ public class Swapper extends Activity implements OnClickListener, Runnable {
 		try {
 			if (arg0.equals(swapon_32)) {
 				log.append("Starting... (It can take long time)\n");
-				su.exec("dd if=/dev/zero of=" + swapPlace + " bs=1M count="
-						+ swapSize + " && mkswap " + swapPlace + " && swapon "
+				su.exec("dd if=/dev/zero of=" + swapPlace
+						+ " bs=1048576 count=" + swapSize
+						+ " && busybox mkswap " + swapPlace + " && swapon "
 						+ swapPlace);
 				progress = new Thread(this);
 				progress.start();
