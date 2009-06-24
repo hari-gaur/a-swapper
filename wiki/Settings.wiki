@@ -1,5 +1,8 @@
 #summary Quick information about program settings
-#labels Featured,Phase-Deploy
+#labels Featured,Phase-Deploy,Deprecated
+= This article should be updated! =
+
+This article is for version up to 0.0.6.
 
 = Introduction =
 
