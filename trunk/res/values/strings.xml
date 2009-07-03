@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <string name="app_name">Swapper</string>
+	<string name="startup_checkbox"></string>
+
+	<string name="app_name">Swapper</string>
+
+	<string-array name="swapsize">
+		<item>1 MB</item>
+		<item>2 MB</item>
+		<item>4 MB</item>
+		<item>8 MB</item>
+		<item>16 MB</item>
+		<item>32 MB (recommended)</item>
+		<item>64 MB</item>
+		<item>128 MB</item>
+		<item>256 MB</item>
+	</string-array>
+	<string-array name="swapsize_int">
+		<item>1</item>
+		<item>2</item>
+		<item>4</item>
+		<item>8</item>
+		<item>16</item>
+		<item>32</item>
+		<item>64</item>
+		<item>128</item>
+		<item>256</item>
+	</string-array>
+	<string-array name="swappiness">
+		<item>0 (disabled)</item>
+		<item>1</item>
+		<item>2</item>
+		<item>5</item>
+		<item>10 (recommended)</item>
+		<item>20</item>
+		<item>40</item>
+		<item>60 (system default)</item>
+		<item>80</item>
+		<item>100</item>
+	</string-array>
+	<string-array name="swappiness_int">
+		<item>0</item>
+		<item>1</item>
+		<item>2</item>
+		<item>5</item>
+		<item>10</item>
+		<item>20</item>
+		<item>40</item>
+		<item>60</item>
+		<item>80</item>
+		<item>100</item>
+	</string-array>
+
 </resources>

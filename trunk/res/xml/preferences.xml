@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="Swapper preferences" android:orderingFromXml="true" android:key="Swapper">
+	<CheckBoxPreference android:title="Run swapper at startup"
+		android:key="startup" android:summary="Enable swap and set swappiness at startup" android:defaultValue="true"/>
+	
+<EditTextPreference android:title="Swap place" android:dialogTitle="Swap place" android:summary="File name for swap file." android:key="swapplace" android:defaultValue="/sdcard/swapfile.swp"></EditTextPreference>
+	<ListPreference android:dialogTitle="Swap size"
+		android:entryValues="@array/swapsize_int" android:entries="@array/swapsize" android:key="swapsize" android:summary="Size of swap file" android:title="Swap size" android:defaultValue="32"></ListPreference>
+	<ListPreference android:key="swappiness"
+		android:summary="How much to swap" android:title="Swappiness"
+		android:entries="@array/swappiness" android:entryValues="@array/swappiness_int" android:dialogTitle="Swappiness" android:defaultValue="10"></ListPreference>
+</PreferenceScreen>  
