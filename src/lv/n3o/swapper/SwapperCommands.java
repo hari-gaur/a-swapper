@@ -43,13 +43,17 @@ public class SwapperCommands extends Thread {
 	Context						context;
 	static SuCommander			su;
 	String						swapPlace;
+	String						swapPartPlace;
+
 	int							swapSize;
 	String						status;
 	int							swappiness;
 	Handler						handler;
+	boolean						swapPart;
+	boolean						recreateSwap;
+	boolean						remakeSwap;
 	static ArrayList<command>	commands;
-
-	static Thread				t;			;
+	static Thread				t;
 
 	public SwapperCommands(Context c) {
 		init_commands(c, (Handler) null);
@@ -59,27 +63,52 @@ public class SwapperCommands extends Thread {
 		init_commands(c, h);
 	}
 
+	public void createSwapFile() {
+		if (!swapPart) {
+			SwapperCommands.commands.add(new command("Creating swap file",
+					"dd if=/dev/zero of=" + swapPlace + " bs=1048576 count="
+							+ swapSize));
+			SwapperCommands.commands.add(new command("Formatting swap",
+					"busybox mkswap " + swapPlace));
+		} else {
+			SwapperCommands.commands.add(new command(
+					"Swap partition is enabled", "Sleep 0.1"));
+		}
+	}
+
+	public void formatSwap() {
+		if (!swapPart) {
+			SwapperCommands.commands.add(new command("Formatting swap",
+					"busybox mkswap " + swapPlace));
+		} else {
+			SwapperCommands.commands.add(new command(
+					"Formatting swap partition", "busybox mkswap "
+							+ swapPartPlace));
+		}
+
+	}
+
 	private void init_commands(Context c, Handler h) {
 		handler = h;
-		if (commands == null) {
-			commands = new ArrayList<command>();
+		if (SwapperCommands.commands == null) {
+			SwapperCommands.commands = new ArrayList<command>();
 		}
-		if (su == null) {
+		if (SwapperCommands.su == null) {
 			try {
-				su = new SuCommander();
+				SwapperCommands.su = new SuCommander();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		if (t == null) {
-			t = new Thread(this);
-			t.start();
+		if (SwapperCommands.t == null) {
+			SwapperCommands.t = new Thread(this);
+			SwapperCommands.t.start();
 		}
 		context = c;
 		settings = PreferenceManager.getDefaultSharedPreferences(c);
 		try {
-			su = new SuCommander();
+			SwapperCommands.su = new SuCommander();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,27 +116,32 @@ public class SwapperCommands extends Thread {
 		swapSize = Integer.parseInt(settings.getString("swapsize", "32"));
 		swapPlace = settings.getString("swapplace", "/sdcard/swapfile.swp");
 		swappiness = Integer.parseInt(settings.getString("swappiness", "10"));
-
+		swapPart = settings.getBoolean("swappartenabled", false);
+		swapPartPlace = settings.getString("swappartplace",
+				"/dev/block/mmcblk0p3");
+		recreateSwap = settings.getBoolean("recreateswap", true);
+		remakeSwap = settings.getBoolean("remakeswap", true);
 	}
 
+	@Override
 	public void run() {
 		try {
 			boolean done = false;
-			while (t != null) {
-				while (!su.isReady()) {
+			while (SwapperCommands.t != null) {
+				while (!SwapperCommands.su.isReady()) {
 					Thread.sleep(100);
 				}
-				if (!commands.isEmpty()) {
+				if (!SwapperCommands.commands.isEmpty()) {
 					done = true;
-					command c = commands.remove(0);
-					su.exec(c.getCommand());
+					command c = SwapperCommands.commands.remove(0);
+					SwapperCommands.su.exec(c.getCommand());
 					if (handler != null) {
 						Message m = Message.obtain();
 						m.obj = c.getTitle();
 						handler.sendMessage(m);
 					}
 				} else {
-					if (handler != null && done) {
+					if ((handler != null) && done) {
 						done = false;
 						Message m = Message.obtain();
 						m.obj = "All done!";
@@ -123,19 +157,43 @@ public class SwapperCommands extends Thread {
 		}
 	}
 
-	public void swapoff() {
-		commands.add(new command("Turning swap off", "swapoff " + swapPlace + " && rm "
-				+ swapPlace));
+	public void swapOff() {
+		if (swapPart) {
+			SwapperCommands.commands.add(new command(
+					"Turning swap off(partition)", "swapoff " + swapPartPlace));
+		} else {
+			SwapperCommands.commands.add(new command("Turning swap off(file)",
+					"swapoff " + swapPlace));
+		}
+		if (!swapPart && recreateSwap) {
+			SwapperCommands.commands.add(new command("Removing swap file",
+					"rm " + swapPlace));
+		}
 	}
 
-	public void swapon() {
-		commands.add(new command("Turning swap on", "dd if=/dev/zero of=" + swapPlace
-				+ " bs=1048576 count=" + swapSize + " && busybox mkswap "
-				+ swapPlace + " && swapon " + swapPlace));
+	public void swapOn() {
+		if (!swapPart && recreateSwap) {
+			SwapperCommands.commands.add(new command("Creating swap file",
+					"dd if=/dev/zero of=" + swapPlace + " bs=1048576 count="
+							+ swapSize));
+		}
+
+		if (remakeSwap) {
+			formatSwap();
+		}
+
+		if (swapPart) {
+			SwapperCommands.commands.add(new command(
+					"Enabling swap(partition)", " && swapon " + swapPartPlace));
+		} else {
+			SwapperCommands.commands.add(new command("Enabling swap(file)",
+					" && swapon " + swapPlace));
+
+		}
 	}
 
 	public void swappiness() {
-		commands.add(new command("Setting swappiness", "echo " + swappiness
-				+ " > /proc/sys/vm/swappiness"));
+		SwapperCommands.commands.add(new command("Setting swappiness", "echo "
+				+ swappiness + " > /proc/sys/vm/swappiness"));
 	}
 }

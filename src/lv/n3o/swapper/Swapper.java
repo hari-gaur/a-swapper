@@ -4,7 +4,6 @@ package lv.n3o.swapper;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,12 +27,20 @@ public class Swapper extends Activity implements OnClickListener {
 	SuCommander		su;
 	Button			swapoff;
 	Button			swapon;
+	Button			recreateSwap;
+	Button			formatSwap;
+	private Handler	handler	= new Handler() {
+								@Override
+								public void handleMessage(Message msg) {
+									log.append("\n->" + (String) msg.obj);
+								}
+							};
 
 	@Override
 	public void onClick(View arg0) {
-		SwapperCommands sc = new SwapperCommands(this,handler);
+		SwapperCommands sc = new SwapperCommands(this, handler);
 		if (arg0.equals(startsettings)) {
-			sc.swapoff();
+			sc.swapOff();
 			Intent i = new Intent(this, SwapperPreferences.class);
 			startActivity(i);
 			return;
@@ -41,11 +48,19 @@ public class Swapper extends Activity implements OnClickListener {
 		log.setText("Please wait...\n");
 		if (arg0.equals(swapon)) {
 			sc.swappiness();
-			sc.swapoff();
-			sc.swapon();
+			sc.swapOff();
+			sc.swapOn();
 		} else if (arg0.equals(swapoff)) {
-			sc.swapoff();
-		} else if (arg0.equals(get_info)) {
+			sc.swapOff();
+		} else if (arg0.equals(recreateSwap)) {
+			sc.swapOff();
+			sc.createSwapFile();
+		} else if (arg0.equals(formatSwap)) {
+			sc.swapOff();
+			sc.formatSwap();
+		}
+
+		else if (arg0.equals(get_info)) {
 			log.setText("Swappiness: ");
 			log.append(su.exec_o("cat /proc/sys/vm/swappiness"));
 			// structure
@@ -86,6 +101,8 @@ public class Swapper extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		swapon = (Button) findViewById(R.id.SwapOn_32);
+		recreateSwap = (Button) findViewById(R.id.RecreateSwapButton);
+		formatSwap = (Button) findViewById(R.id.FormatSwapButton);
 		log = (TextView) findViewById(R.id.LogText);
 		swapon.setOnClickListener(this);
 		swapon.setText("Swap ON");
@@ -95,18 +112,16 @@ public class Swapper extends Activity implements OnClickListener {
 		get_info.setOnClickListener(this);
 		startsettings = (Button) findViewById(R.id.StartSettings);
 		startsettings.setOnClickListener(this);
+		recreateSwap.setOnClickListener(this);
+		formatSwap.setOnClickListener(this);
 		try {
 			su = new SuCommander();
 		} catch (IOException e) {
 			log.append(e.getMessage());
 			e.printStackTrace();
+			// TODO: Here should be info about root :)
+			finish();
 		}
 
 	}
-	private Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			log.append("\n->" + (String)msg.obj);
-		}
-	};
 }
