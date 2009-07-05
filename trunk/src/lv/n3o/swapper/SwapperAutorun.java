@@ -16,12 +16,13 @@ public class SwapperAutorun extends BroadcastReceiver {
 		SharedPreferences settings = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		Boolean autorun = settings.getBoolean("startup", true);
-		if (!autorun)
+		if (!autorun) {
 			return;
+		}
 		Toast.makeText(context, "Swapper starting...", 100).show();
 		SwapperCommands sc = new SwapperCommands(context);
 		sc.swappiness();
-		sc.swapon();
+		sc.swapOn();
 	}
 
 }

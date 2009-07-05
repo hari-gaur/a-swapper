@@ -1,7 +1,9 @@
 package lv.n3o.swapper;
 
+
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+
 
 public class SwapperPreferences extends PreferenceActivity {
 	@Override
