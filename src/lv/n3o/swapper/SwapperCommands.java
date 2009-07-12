@@ -135,11 +135,19 @@ public class SwapperCommands extends Thread {
 					done = true;
 					command c = SwapperCommands.commands.remove(0);
 					SwapperCommands.su.exec(c.getCommand());
+					while (!SwapperCommands.su.isReady()) {
+						Thread.sleep(100);
+					}
 					if (handler != null) {
 						Message m = Message.obtain();
-						m.obj = c.getTitle();
+						if (SwapperCommands.su.isSuccess()) {
+							m.obj = c.getTitle() + " OK";
+						} else {
+							m.obj = c.getTitle() + " FAIL";
+						}
 						handler.sendMessage(m);
 					}
+
 				} else {
 					if ((handler != null) && done) {
 						done = false;
