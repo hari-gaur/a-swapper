@@ -21,6 +21,7 @@ public class SuCommander implements Runnable {
 	private boolean		ready;
 	Thread				thread;
 	OutputStream		writer;
+	private boolean		success;
 
 	public SuCommander() throws IOException {
 		Process p;
@@ -34,7 +35,7 @@ public class SuCommander implements Runnable {
 
 	public void exec(String command) throws IOException {
 		if (isReady()) {
-			writer.write((command + "\n").getBytes("ASCII"));
+			writer.write((command).getBytes("ASCII"));
 			thread = new Thread(this);
 			setReady(false);
 			thread.start();
@@ -125,6 +126,10 @@ public class SuCommander implements Runnable {
 		return ready;
 	}
 
+	public boolean isSuccess() {
+		return success;
+	}
+
 	/**
 	 * @return randomized hash for identifying "end of output"
 	 */
@@ -146,9 +151,19 @@ public class SuCommander implements Runnable {
 	public void run() {
 		setOutput("");
 		String id = make_id();
+		String success = make_id();
 		try {
-			writer.write(("\n \n echo " + id + "\n").getBytes("ASCII"));
-			setOutput(get_output(id));
+			writer.write((" && echo " + success + " \n \n echo " + id + "\n")
+					.getBytes("ASCII"));
+			String output = get_output(id);
+			if (output.toString().contains(success)) {
+				output = new StringBuilder(output.toString().replace(success,
+						"")).toString();
+				setSuccess(true);
+			} else {
+				setSuccess(false);
+			}
+			setOutput(output);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -173,5 +188,9 @@ public class SuCommander implements Runnable {
 	 */
 	private void setReady(boolean ready) {
 		this.ready = ready;
+	}
+
+	private void setSuccess(boolean success) {
+		this.success = success;
 	}
 }
