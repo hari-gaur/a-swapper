@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 
 public class SwapperCommands extends Thread {
@@ -48,7 +49,7 @@ public class SwapperCommands extends Thread {
 	int							swapSize;
 	String						status;
 	int							swappiness;
-	Handler						handler;
+	static Handler				handler;
 	boolean						swapPart;
 	boolean						recreateSwap;
 	boolean						remakeSwap;
@@ -89,7 +90,7 @@ public class SwapperCommands extends Thread {
 	}
 
 	private void init_commands(Context c, Handler h) {
-		handler = h;
+		SwapperCommands.handler = h;
 		if (SwapperCommands.commands == null) {
 			SwapperCommands.commands = new ArrayList<command>();
 		}
@@ -138,22 +139,50 @@ public class SwapperCommands extends Thread {
 					while (!SwapperCommands.su.isReady()) {
 						Thread.sleep(100);
 					}
-					if (handler != null) {
+					if (SwapperCommands.handler != null) {
 						Message m = Message.obtain();
 						if (SwapperCommands.su.isSuccess()) {
 							m.obj = c.getTitle() + " OK";
 						} else {
 							m.obj = c.getTitle() + " FAIL";
 						}
-						handler.sendMessage(m);
+						SwapperCommands.handler.sendMessage(m);
+					}
+					if (SwapperCommands.handler != null) {
+						Log.i("Swapper",
+								SwapperCommands.handler.toString()
+										+ " EXEC "
+										+ c.getTitle()
+										+ " RESULT "
+										+ String.valueOf(SwapperCommands.su
+												.isSuccess()));
+					} else {
+						Log.i("Swapper",
+								"H=null EXEC "
+										+ c.getTitle()
+										+ " RESULT "
+										+ String.valueOf(SwapperCommands.su
+												.isSuccess()));
+					}
+					String output = SwapperCommands.su.getOutput();
+					if (output != null) {
+						output = output.trim().replace("\n", "");
+						if (output.length() > 2) {
+							Log.d("Swapper", output);
+						}
+
+					}
+					String errors = SwapperCommands.su.getErrors();
+					if (errors != null) {
+						Log.e("Swapper", errors);
 					}
 
 				} else {
-					if ((handler != null) && done) {
+					if ((SwapperCommands.handler != null) && done) {
 						done = false;
 						Message m = Message.obtain();
 						m.obj = "All done!";
-						handler.sendMessage(m);
+						SwapperCommands.handler.sendMessage(m);
 					}
 				}
 				Thread.sleep(1000);
