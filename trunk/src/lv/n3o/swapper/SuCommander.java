@@ -12,7 +12,7 @@ import java.util.Random;
  * @author n3o
  */
 public class SuCommander implements Runnable {
-
+	Random				random;
 	BufferedInputStream	err;
 	private String		errors;
 	private String		output;
@@ -24,6 +24,8 @@ public class SuCommander implements Runnable {
 	private boolean		success;
 
 	public SuCommander() throws IOException {
+		random = new Random();
+
 		Process p;
 		p = Runtime.getRuntime().exec("su");
 		writer = p.getOutputStream();
@@ -106,8 +108,10 @@ public class SuCommander implements Runnable {
 	 * @return the errors, null if no errors
 	 */
 	public String getErrors() {
-		if (errors.length() == 0) {
-			return null;
+		if (errors != null) {
+			if (errors.length() == 0) {
+				return null;
+			}
 		}
 		return errors;
 	}
@@ -134,7 +138,6 @@ public class SuCommander implements Runnable {
 	 * @return randomized hash for identifying "end of output"
 	 */
 	private String make_id() {
-		Random random = new Random();
 		long r1 = random.nextLong();
 		long r2 = random.nextLong();
 		String hash1 = Long.toHexString(r1);
