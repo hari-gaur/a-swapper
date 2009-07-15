@@ -98,8 +98,8 @@ public class SwapperCommands extends Thread {
 			try {
 				SwapperCommands.su = new SuCommander();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				System.exit(1);
 			}
 		}
 		if (SwapperCommands.t == null) {
