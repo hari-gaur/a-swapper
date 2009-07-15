@@ -64,8 +64,9 @@ public class Swapper extends Activity implements OnClickListener {
 			log.setText("Swappiness: ");
 			log.append(su.exec_o("cat /proc/sys/vm/swappiness"));
 			// structure
-			// arraylists
+			// array lists
 			// total, used, free
+			// TODO: it seems that some roms have different free output
 			try {
 				String[] free = su.exec_o("free").split("\n");
 				ArrayList<String> mem = new ArrayList<String>();

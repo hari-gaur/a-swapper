@@ -8,24 +8,20 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 
-/**
- * @author n3o
- */
 public class SuCommander implements Runnable {
-	Random				random;
-	BufferedInputStream	err;
-	private String		errors;
-	private String		output;
 
+	Random				random;	/* For random id to control execution */
+	BufferedInputStream	err;
+	private String		errors;	/* Saves error stream output */
+	private String		output;	/* Saves error stream output */
 	BufferedInputStream	reader;
 	private boolean		ready;
 	Thread				thread;
 	OutputStream		writer;
-	private boolean		success;
+	private boolean		success;	/* True if execution was successful */
 
 	public SuCommander() throws IOException {
 		random = new Random();
-
 		Process p;
 		p = Runtime.getRuntime().exec("su");
 		writer = p.getOutputStream();
@@ -35,15 +31,31 @@ public class SuCommander implements Runnable {
 
 	}
 
-	public void exec(String command) throws IOException {
+	/**
+	 * Places command to execution and waits for result
+	 * 
+	 * @param command
+	 * @return true if placed, false if thread was not ready
+	 * @throws IOException
+	 */
+	public boolean exec(String command) throws IOException {
 		if (isReady()) {
 			writer.write((command).getBytes("ASCII"));
 			thread = new Thread(this);
 			setReady(false);
 			thread.start();
+			return true;
+		} else {
+			return false;
 		}
 	}
 
+	/**
+	 * Executes command and blocks till get all output
+	 * 
+	 * @param command
+	 * @return normal output of command (not error stream)
+	 */
 	public String exec_o(String command) {
 		try {
 			exec(command);
@@ -64,7 +76,7 @@ public class SuCommander implements Runnable {
 		reader.close();
 		writer.close();
 		err.close();
-		super.finalize(); // not necessary if extending Object.
+		super.finalize();
 	}
 
 	/**
@@ -124,18 +136,21 @@ public class SuCommander implements Runnable {
 	}
 
 	/**
-	 * @return the ready
+	 * @return true if thread is ready for exec
 	 */
 	public boolean isReady() {
 		return ready;
 	}
 
+	/**
+	 * @return true if last command executed successful
+	 */
 	public boolean isSuccess() {
 		return success;
 	}
 
 	/**
-	 * @return randomized hash for identifying "end of output"
+	 * @return randomized hash
 	 */
 	private String make_id() {
 		long r1 = random.nextLong();
