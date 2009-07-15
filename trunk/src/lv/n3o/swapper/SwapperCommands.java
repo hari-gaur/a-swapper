@@ -73,7 +73,7 @@ public class SwapperCommands extends Thread {
 					"busybox mkswap " + swapPlace));
 		} else {
 			SwapperCommands.commands.add(new command(
-					"Swap partition is enabled", "Sleep 0.1"));
+					"Swap partition is enabled", "false"));
 		}
 	}
 
@@ -197,10 +197,10 @@ public class SwapperCommands extends Thread {
 	public void swapOff() {
 		if (swapPart) {
 			SwapperCommands.commands.add(new command(
-					"Turning swap off(partition)", "swapoff " + swapPartPlace));
+					"Turning swap off(partition)", "busybox swapoff " + swapPartPlace));
 		} else {
 			SwapperCommands.commands.add(new command("Turning swap off(file)",
-					"swapoff " + swapPlace));
+					"busybox swapoff " + swapPlace));
 		}
 		if (!swapPart && recreateSwap) {
 			SwapperCommands.commands.add(new command("Removing swap file",
@@ -221,10 +221,10 @@ public class SwapperCommands extends Thread {
 
 		if (swapPart) {
 			SwapperCommands.commands.add(new command(
-					"Enabling swap(partition)", " && swapon " + swapPartPlace));
+					"Enabling swap(partition)", " busybox swapon " + swapPartPlace));
 		} else {
 			SwapperCommands.commands.add(new command("Enabling swap(file)",
-					" && swapon " + swapPlace));
+					" busybox swapon " + swapPlace));
 
 		}
 	}
