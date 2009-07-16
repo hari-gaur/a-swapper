@@ -1,22 +1,21 @@
-#summary Quick information about program settings
-#labels Featured,Phase-Deploy,Deprecated
-= This article should be updated! =
+#summary There are many questions about settings and many false-positive "bugs" related to misuse of advancced settings.
+#labels Featured,Information
 
-This article is for version up to 0.0.6.
 
-= Introduction =
+= Settings =
+|| *Name* || Meaning with swap file || Meaning with swap partition ||
+|| Run swapper at startup || Launch swapper at startup and try to create/use swap file || Launch swapper at startup and try to enable swap partition ||
+|| Swap place || Where to place swap file || _none_ ||
+|| Swap size || Size of swap file || _none_ ||
+|| Swappiness || How much to swap - 0-100 || How much to swap - 0-100 ||
+|| Use swap partition || If disabled, using swap file settings || If enabled, using swap partition settings ||
+|| Swap partition || _none_ || Which partition to use for swap ||
+|| Recreate swap file || Each time delete and create swap file || _none_ ||
+|| Reformat swap || Make swap file system in swap file || Make swap file system on partition||
 
-Program have 2 changeable settings - swap size and location. In program you can also change swappiness of system.
+= Misuse =
 
-= Details =
-
-==Swap size==
-
-Size of file for swapping. Here info for reading http://en.wikipedia.org/wiki/Swap_space
-
-==Location==
-
-Path where to place swap file (Locations buttons contains predefined paths, one is /sdcard/swapfile.swp, other is /system/sd/swapfile.swp - for those, who divided their sd cards for application sorage).
-
-==In-Program system settings==
-In program you have swappiness option - range 0-100 - how much you would like to swap. My tests showed that best performance/usability (for my sd+phone) is 32 MB swap and swappiness = 10. Your preferences can differ.
+  * Swapper doesn't create swap partition, it should be already available.
+  * Swap partition is not same as ext2/3 partition, it normally doesn't mount in linux, it contains no files.
+  * Swapper can format any existing partition to swap partition, but *ALL DATA ON THAT PARTITION WILL BE LOST*
+  * With enabled "Recreate swap file" but disabled "Reformat swap" created swap file will not be of any use (enabling swap will fail!)
