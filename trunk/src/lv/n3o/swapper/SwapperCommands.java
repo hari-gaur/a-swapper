@@ -213,6 +213,9 @@ public class SwapperCommands extends Thread {
 			SwapperCommands.commands.add(new command("Creating swap file",
 					"dd if=/dev/zero of=" + swapPlace + " bs=1048576 count="
 							+ swapSize));
+			SwapperCommands.commands.add(new command("Changing permissions",
+					"chmod 600 " + swapPlace));
+			
 		}
 
 		if (remakeSwap) {
