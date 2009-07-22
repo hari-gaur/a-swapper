@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,12 +32,18 @@ public class Swapper extends Activity implements OnClickListener {
 	Button			swapon;
 	Button			recreateSwap;
 	Button			formatSwap;
-	private Handler	handler	= new Handler() {
-								@Override
-								public void handleMessage(Message msg) {
-									log.append("\n->" + (String) msg.obj);
-								}
-							};
+	Button			busybox;
+	View			downloadBusybox			= new View(null);
+	private Handler	handler					= new Handler() {
+												@Override
+												public void handleMessage(
+														Message msg) {
+													log.append("\n->"
+															+ (String) msg.obj);
+												}
+											};
+
+	final int		DIALOG_YES_NO_MESSAGE	= 999;
 
 	@Override
 	public void onClick(View arg0) {
@@ -58,6 +67,10 @@ public class Swapper extends Activity implements OnClickListener {
 		} else if (arg0.equals(formatSwap)) {
 			sc.swapOff();
 			sc.formatSwap();
+		} else if (arg0.equals(busybox)) {
+			showDialog(DIALOG_YES_NO_MESSAGE);
+		} else if (arg0.equals(downloadBusybox)) {
+			sc.prepareBusybox();
 		}
 
 		else if (arg0.equals(get_info)) {
@@ -115,6 +128,8 @@ public class Swapper extends Activity implements OnClickListener {
 		startsettings.setOnClickListener(this);
 		recreateSwap.setOnClickListener(this);
 		formatSwap.setOnClickListener(this);
+		busybox = (Button) findViewById(R.id.Busybox);
+		busybox.setOnClickListener(this);
 		try {
 			su = new SuCommander();
 		} catch (IOException e) {
@@ -125,4 +140,31 @@ public class Swapper extends Activity implements OnClickListener {
 		}
 
 	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+
+		switch (id) {
+			case DIALOG_YES_NO_MESSAGE:
+				return new AlertDialog.Builder(this).setTitle(
+						"Install busybox?").setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								Swapper.this.onClick(downloadBusybox);
+							}
+						}).setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
+								// User clicked Cancel so do some stuff
+
+								System.out.println("cancel clicked.");
+							}
+						}).create();
+		}
+		return null;
+	}
+
 }

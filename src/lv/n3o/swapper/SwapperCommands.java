@@ -45,7 +45,7 @@ public class SwapperCommands extends Thread {
 	static SuCommander			su;
 	String						swapPlace;
 	String						swapPartPlace;
-
+	String						busybox;
 	int							swapSize;
 	String						status;
 	int							swappiness;
@@ -69,8 +69,8 @@ public class SwapperCommands extends Thread {
 			SwapperCommands.commands.add(new command("Creating swap file",
 					"dd if=/dev/zero of=" + swapPlace + " bs=1048576 count="
 							+ swapSize));
-			SwapperCommands.commands.add(new command("Formatting swap",
-					"busybox mkswap " + swapPlace));
+			SwapperCommands.commands.add(new command("Formatting swap", busybox
+					+ " mkswap " + swapPlace));
 		} else {
 			SwapperCommands.commands.add(new command(
 					"Swap partition is enabled", "false"));
@@ -79,11 +79,11 @@ public class SwapperCommands extends Thread {
 
 	public void formatSwap() {
 		if (!swapPart) {
-			SwapperCommands.commands.add(new command("Formatting swap",
-					"busybox mkswap " + swapPlace));
+			SwapperCommands.commands.add(new command("Formatting swap", busybox
+					+ " mkswap " + swapPlace));
 		} else {
 			SwapperCommands.commands.add(new command(
-					"Formatting swap partition", "busybox mkswap "
+					"Formatting swap partition", busybox + " mkswap "
 							+ swapPartPlace));
 		}
 
@@ -122,6 +122,37 @@ public class SwapperCommands extends Thread {
 				"/dev/block/mmcblk0p3");
 		recreateSwap = settings.getBoolean("recreateswap", true);
 		remakeSwap = settings.getBoolean("remakeswap", true);
+		busybox = settings.getString("busybox", "busybox");
+	}
+
+	public void prepareBusybox() {
+		SwapperCommands.commands.add(new command("Cleaning up old busybox",
+				"rm /data/local/bin/busybox"));
+		SwapperCommands.commands.add(new command("Creating busybox directory",
+				"mkdir /data/local/bin"));
+		SwapperCommands.commands.add(new command("Starting busybox download",
+				"true"));
+		try {
+			BusyboxComander.installBusybox();
+			SwapperCommands.commands.add(new command("Busybox downloaded",
+					"true"));
+			SwapperCommands.commands
+					.add(new command("Copying busybox to /data/local/bin",
+							"dd if=/data/data/lv.n3o.swapper/busybox of=/data/local/bin/busybox"));
+			SwapperCommands.commands.add(new command(
+					"Making busybox executable",
+					"chmod 4777 /data/local/bin/busybox"));
+			SharedPreferences.Editor ed = settings.edit();
+			ed.putString("busybox", "/data/local/bin/busybox");
+			ed.commit();
+			busybox = settings.getString("busybox", "busybox");
+			SwapperCommands.commands.add(new command("Cleaning up", busybox
+					+ " rm /data/data/lv.n3o.swapper/busybox"));
+		} catch (Exception e) {
+			SwapperCommands.commands.add(new command("Busybox download failed",
+					"false"));
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -197,14 +228,15 @@ public class SwapperCommands extends Thread {
 	public void swapOff() {
 		if (swapPart) {
 			SwapperCommands.commands.add(new command(
-					"Turning swap off(partition)", "busybox swapoff " + swapPartPlace));
+					"Turning swap off(partition)", busybox + " swapoff "
+							+ swapPartPlace));
 		} else {
 			SwapperCommands.commands.add(new command("Turning swap off(file)",
-					"busybox swapoff " + swapPlace));
+					busybox + " swapoff " + swapPlace));
 		}
 		if (!swapPart && recreateSwap) {
 			SwapperCommands.commands.add(new command("Removing swap file",
-					"rm " + swapPlace));
+					busybox + " rm " + swapPlace));
 		}
 	}
 
@@ -214,8 +246,8 @@ public class SwapperCommands extends Thread {
 					"dd if=/dev/zero of=" + swapPlace + " bs=1048576 count="
 							+ swapSize));
 			SwapperCommands.commands.add(new command("Changing permissions",
-					"chmod 600 " + swapPlace));
-			
+					busybox + " chmod 600 " + swapPlace));
+
 		}
 
 		if (remakeSwap) {
@@ -224,10 +256,11 @@ public class SwapperCommands extends Thread {
 
 		if (swapPart) {
 			SwapperCommands.commands.add(new command(
-					"Enabling swap(partition)", " busybox swapon " + swapPartPlace));
+					"Enabling swap(partition)", busybox + " swapon "
+							+ swapPartPlace));
 		} else {
 			SwapperCommands.commands.add(new command("Enabling swap(file)",
-					" busybox swapon " + swapPlace));
+					busybox + " swapon " + swapPlace));
 
 		}
 	}
