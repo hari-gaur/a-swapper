@@ -9,11 +9,13 @@
 	<ListPreference android:key="swappiness"
 		android:summary="How much to swap" android:title="Swappiness"
 		android:entries="@array/swappiness" android:entryValues="@array/swappiness_int" android:dialogTitle="Swappiness" android:defaultValue="10"></ListPreference>
-<PreferenceScreen android:key="advanced" android:title="Advanced preferences" android:summary="For experienced users">
+<CheckBoxPreference android:summaryOff="Swap will not be unmounted before sharing SD" android:summaryOn="Swap will be unmounted before sharing SD" android:title="Safe Unmount" android:key="swapperSafeUnmount" android:summary="Unmount Swap if sharing SD" android:defaultValue="true"></CheckBoxPreference><CheckBoxPreference android:defaultValue="true" android:title="Safe Remount" android:key="swapperSafeRemount" android:summary="Remount Swap if sharing SD" android:summaryOff="Swap will not be mounted after sharing SD" android:summaryOn="Swap will be mounted after sharing SD"></CheckBoxPreference><PreferenceScreen android:key="advanced" android:title="Advanced preferences" android:summary="For experienced users">
 
 <PreferenceCategory android:title="Swap Partition" android:key="SwapPartCat"><CheckBoxPreference android:summaryOn="Using swap partition" android:title="Use swap partition" android:summaryOff="Using swap file" android:defaultValue="False" android:key="swappartenabled"></CheckBoxPreference><EditTextPreference android:defaultValue="/dev/block/mmcblk0p3" android:key="swappartplace" android:title="Swap partition"></EditTextPreference></PreferenceCategory>
 <PreferenceCategory android:title="Swap Fine Tuning" android:key="SwapFineTunung"><CheckBoxPreference android:key="recreateswap" android:summary="Delete swap file after swapoff and create before swapon" android:title="Recreate swap file" android:defaultValue="True"></CheckBoxPreference>
 <CheckBoxPreference android:key="remakeswap" android:defaultValue="True" android:summary="Format swap each time swap is enabled" android:title="Reformat swap"></CheckBoxPreference>
 </PreferenceCategory>
+<EditTextPreference android:summary="Location or command to execute for busybox, empty if busybox is not nessesary" android:title="Busybox location/command" android:key="busybox" android:defaultValue="busybox" android:dialogTitle="Busybox location/command"></EditTextPreference>
 </PreferenceScreen>
+
 </PreferenceScreen>  
