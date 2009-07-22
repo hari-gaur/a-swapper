@@ -3,7 +3,8 @@
 	android:orientation="vertical" android:layout_height="fill_parent"
 	android:layout_width="fill_parent">
 	<ScrollView android:id="@+id/ScrollView02"
-		android:layout_width="fill_parent" android:layout_gravity="center" android:layout_height="wrap_content">
+		android:layout_width="fill_parent" android:layout_gravity="center"
+		android:layout_height="wrap_content">
 		<TableLayout android:id="@+id/TableLayout01"
 			android:layout_gravity="center" android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
@@ -13,13 +14,17 @@
 			<TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content"
 				android:layout_height="wrap_content">
 				<Button android:id="@+id/SwapOn_32" android:layout_height="fill_parent"
-					android:layout_width="fill_parent" android:text="Swap ON"></Button>
-				<Button android:id="@+id/SwapOff" android:text="Swap OFF"
-					android:layout_width="fill_parent" android:layout_height="fill_parent"></Button>
-			</TableRow><TextView android:id="@+id/TextView01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:textSize="22px" android:text="Misc"></TextView><TableRow android:id="@+id/TableRow03" android:layout_width="wrap_content" android:layout_height="wrap_content">
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/RecreateSwapButton" android:text="Create swap"></Button>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Format swap" android:id="@+id/FormatSwapButton"></Button>
-</TableRow>
+					android:layout_width="fill_parent" android:text="ON"></Button>
+				<Button android:id="@+id/SwapOff" android:layout_width="fill_parent"
+					android:layout_height="fill_parent" android:text="OFF"></Button>
+				<Button android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:id="@+id/RecreateSwapButton"
+					android:text="Crearte"></Button>
+				<Button android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:id="@+id/FormatSwapButton"
+					android:text="Format"></Button>
+			</TableRow>
+			
 			
 			
 			
@@ -29,12 +34,14 @@
 				<Button android:text="Settings" android:id="@+id/StartSettings"
 					android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
 				<Button android:id="@+id/GetInfo" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:text="Get information"></Button>
+					android:layout_height="wrap_content" android:text="Get info"></Button>
+				<Button android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:id="@+id/Busybox" android:text="Busybox"></Button>
 			</TableRow>
-		
 
-		
-</TableLayout>
+
+
+		</TableLayout>
 	</ScrollView>
 	<ScrollView android:id="@+id/ScrollView01"
 		android:layout_height="fill_parent" android:layout_width="fill_parent">
