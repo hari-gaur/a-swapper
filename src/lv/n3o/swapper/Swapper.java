@@ -47,7 +47,7 @@ public class Swapper extends Activity implements OnClickListener {
 
 	@Override
 	public void onClick(View arg0) {
-		SwapperCommands sc = new SwapperCommands(this, handler);
+		final SwapperCommands sc = new SwapperCommands(this, handler);
 		if (arg0.equals(startsettings)) {
 			sc.swapOff();
 			Intent i = new Intent(this, SwapperPreferences.class);
@@ -70,7 +70,17 @@ public class Swapper extends Activity implements OnClickListener {
 		} else if (arg0.equals(busybox)) {
 			showDialog(DIALOG_YES_NO_MESSAGE);
 		} else if (arg0.equals(downloadBusybox)) {
-			sc.prepareBusybox();
+			final ProgressDialog pd = ProgressDialog.show(Swapper.this,
+					"Please wait!", "Downloading busybox...", true);
+			new Thread() {
+				public void run() {
+					try {
+						sc.prepareBusybox();
+					} catch (Exception e) {
+					}
+					pd.dismiss();
+				}
+			}.start();
 		}
 
 		else if (arg0.equals(get_info)) {
