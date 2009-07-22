@@ -19,7 +19,6 @@ public class SwapperSafeRemount extends BroadcastReceiver {
 		if (!autorun) {
 			return;
 		}
-		// Toast.makeText(context, "Swapper starting...", 100).show();
 		Log.d("Swapper", "Starting safe remount");
 		SwapperCommands sc = new SwapperCommands(context);
 		sc.swappiness();
