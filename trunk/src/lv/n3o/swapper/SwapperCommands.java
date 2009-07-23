@@ -133,7 +133,7 @@ public class SwapperCommands extends Thread {
 		SwapperCommands.commands.add(new command("Starting busybox download",
 				"true"));
 		try {
-			BusyboxComander.installBusybox();
+			BusyboxComander.downloadBusybox();
 			SwapperCommands.commands.add(new command("Busybox downloaded",
 					"true"));
 			SwapperCommands.commands
@@ -153,6 +153,18 @@ public class SwapperCommands extends Thread {
 					"false"));
 			e.printStackTrace();
 		}
+	}
+
+	public void removeBusybox() {
+		SwapperCommands.commands.add(new command("Removing busybox",
+				"rm /data/local/bin/busybox"));
+		busybox = settings.getString("busybox", "busybox");
+		if (busybox.equals("/data/local/bin/busybox")) {
+			SharedPreferences.Editor ed = settings.edit();
+			ed.putString("busybox", "busybox");
+			ed.commit();
+		}
+		busybox = settings.getString("busybox", "busybox");
 	}
 
 	@Override

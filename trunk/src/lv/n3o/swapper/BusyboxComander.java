@@ -12,7 +12,7 @@ import java.net.URL;
 
 public class BusyboxComander {
 
-	public static void installBusybox() throws MalformedURLException,
+	public static void downloadBusybox() throws MalformedURLException,
 			IOException {
 		URL u = new URL("http://swapper.n3o.lv/bin/busybox");
 		HttpURLConnection c = (HttpURLConnection) u.openConnection();

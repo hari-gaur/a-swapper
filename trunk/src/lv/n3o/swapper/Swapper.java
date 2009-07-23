@@ -25,17 +25,11 @@ import android.widget.TextView;
 public class Swapper extends Activity implements OnClickListener {
 
 	ProgressDialog	dia;
-	Button			get_info;
 	TextView		log;
 	Thread			progress;
-	Button			set_swappiness;
-	Button			startsettings;
 	SuCommander		su;
 	Button			swapoff;
 	Button			swapon;
-	Button			recreateSwap;
-	Button			formatSwap;
-	Button			busybox;
 	View			downloadBusybox			= new View(null);
 	private Handler	handler					= new Handler() {
 												@Override
@@ -51,12 +45,6 @@ public class Swapper extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		final SwapperCommands sc = new SwapperCommands(this, handler);
-		if (arg0.equals(startsettings)) {
-			sc.swapOff();
-			Intent i = new Intent(this, SwapperPreferences.class);
-			startActivity(i);
-			return;
-		}
 		log.setText("Please wait...\n");
 		if (arg0.equals(swapon)) {
 			sc.swappiness();
@@ -64,14 +52,6 @@ public class Swapper extends Activity implements OnClickListener {
 			sc.swapOn();
 		} else if (arg0.equals(swapoff)) {
 			sc.swapOff();
-		} else if (arg0.equals(recreateSwap)) {
-			sc.swapOff();
-			sc.createSwapFile();
-		} else if (arg0.equals(formatSwap)) {
-			sc.swapOff();
-			sc.formatSwap();
-		} else if (arg0.equals(busybox)) {
-			showDialog(DIALOG_YES_NO_MESSAGE);
 		} else if (arg0.equals(downloadBusybox)) {
 			final ProgressDialog pd = ProgressDialog.show(Swapper.this,
 					"Please wait!", "Downloading busybox...", true);
@@ -86,38 +66,7 @@ public class Swapper extends Activity implements OnClickListener {
 			}.start();
 		}
 
-		else if (arg0.equals(get_info)) {
-			log.setText("Swappiness: ");
-			log.append(su.exec_o("cat /proc/sys/vm/swappiness"));
-			// structure
-			// array lists
-			// total, used, free
-			// TODO: it seems that some roms have different free output
-			try {
-				String[] free = su.exec_o("free").split("\n");
-				ArrayList<String> mem = new ArrayList<String>();
-				for (String s : free[1].split(" ")) {
-					s.replace(" ", "");
-					if (s.length() > 0) {
-						mem.add(s);
-					}
-				}
-				log.append("Memory:\t" + mem.get(1) + " KB \n\tUsed:\t"
-						+ mem.get(2) + "\n\tfree:\t" + mem.get(3) + "\n");
-
-				mem = new ArrayList<String>();
-				for (String s : free[2].split(" ")) {
-					s.replace(" ", "");
-					if (s.length() > 0) {
-						mem.add(s);
-					}
-				}
-				log.append("Swap: \t" + mem.get(1) + " KB \n\tUsed:\t"
-						+ mem.get(2) + "\n\tfree\t" + mem.get(3) + "\n");
-			} catch (ArrayIndexOutOfBoundsException e) {
-				log.append("Reading error. Please try one more time.");
-			}
-		} else {
+		else {
 			return;
 		}
 	}
@@ -128,21 +77,10 @@ public class Swapper extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		swapon = (Button) findViewById(R.id.SwapOn_32);
-		recreateSwap = (Button) findViewById(R.id.RecreateSwapButton);
-		formatSwap = (Button) findViewById(R.id.FormatSwapButton);
 		log = (TextView) findViewById(R.id.LogText);
 		swapon.setOnClickListener(this);
-		swapon.setText("Swap ON");
 		swapoff = (Button) findViewById(R.id.SwapOff);
 		swapoff.setOnClickListener(this);
-		get_info = (Button) findViewById(R.id.GetInfo);
-		get_info.setOnClickListener(this);
-		startsettings = (Button) findViewById(R.id.StartSettings);
-		startsettings.setOnClickListener(this);
-		recreateSwap.setOnClickListener(this);
-		formatSwap.setOnClickListener(this);
-		busybox = (Button) findViewById(R.id.Busybox);
-		busybox.setOnClickListener(this);
 		try {
 			su = new SuCommander();
 		} catch (IOException e) {
@@ -173,8 +111,7 @@ public class Swapper extends Activity implements OnClickListener {
 
 		if (item.hasSubMenu() == false) {
 			String i = item.getTitle().toString();
-			
-			
+
 			final SwapperCommands sc = new SwapperCommands(this, handler);
 			if (i.equals("Settings")) {
 				sc.swapOff();
@@ -190,7 +127,9 @@ public class Swapper extends Activity implements OnClickListener {
 				sc.formatSwap();
 			} else if (i.equals("Download")) {
 				showDialog(DIALOG_YES_NO_MESSAGE);
-			}			else if (i.equals("info")) {
+			} else if (i.equals("Remove")) {
+				sc.removeBusybox();
+			} else if (i.equals("info")) {
 				log.setText("Swappiness: ");
 				log.append(su.exec_o("cat /proc/sys/vm/swappiness"));
 				// structure
