@@ -13,6 +13,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -149,6 +152,82 @@ public class Swapper extends Activity implements OnClickListener {
 			finish();
 		}
 
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		SubMenu sm = menu.addSubMenu("Swap");
+		sm.add("Create");
+		sm.add("Reformat");
+		sm = menu.addSubMenu("Configuration");
+		sm.add("Settings");
+		sm.add("Info");
+		sm = menu.addSubMenu("Busybox");
+		sm.add("Download");
+		sm.add("Remove");
+		return true;
+
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.hasSubMenu() == false) {
+			String i = item.getTitle().toString();
+			
+			
+			final SwapperCommands sc = new SwapperCommands(this, handler);
+			if (i.equals("Settings")) {
+				sc.swapOff();
+				startActivity(new Intent(this, SwapperPreferences.class));
+				return true;
+			}
+			log.setText("Please wait...\n");
+			if (i.equals("Recreate")) {
+				sc.swapOff();
+				sc.createSwapFile();
+			} else if (i.equals("Format")) {
+				sc.swapOff();
+				sc.formatSwap();
+			} else if (i.equals("Download")) {
+				showDialog(DIALOG_YES_NO_MESSAGE);
+			}			else if (i.equals("info")) {
+				log.setText("Swappiness: ");
+				log.append(su.exec_o("cat /proc/sys/vm/swappiness"));
+				// structure
+				// array lists
+				// total, used, free
+				// TODO: it seems that some roms have different free output
+				try {
+					String[] free = su.exec_o("free").split("\n");
+					ArrayList<String> mem = new ArrayList<String>();
+					for (String s : free[1].split(" ")) {
+						s.replace(" ", "");
+						if (s.length() > 0) {
+							mem.add(s);
+						}
+					}
+					log.append("Memory:\t" + mem.get(1) + " KB \n\tUsed:\t"
+							+ mem.get(2) + "\n\tfree:\t" + mem.get(3) + "\n");
+
+					mem = new ArrayList<String>();
+					for (String s : free[2].split(" ")) {
+						s.replace(" ", "");
+						if (s.length() > 0) {
+							mem.add(s);
+						}
+					}
+					log.append("Swap: \t" + mem.get(1) + " KB \n\tUsed:\t"
+							+ mem.get(2) + "\n\tfree\t" + mem.get(3) + "\n");
+				} catch (ArrayIndexOutOfBoundsException e) {
+					log.append("Reading error. Please try one more time.");
+				}
+			} else {
+				return false;
+			}
+		}
+
+		// Consume the selection event.
+		return true;
 	}
 
 	@Override
