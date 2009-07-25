@@ -29,6 +29,6 @@
 	<ScrollView android:id="@+id/ScrollView01"
 		android:layout_height="fill_parent" android:layout_width="fill_parent">
 		<TextView android:id="@+id/LogText" android:layout_width="wrap_content"
-			android:layout_height="wrap_content"></TextView>
+			android:layout_height="wrap_content" android:text="@string/startup_text"></TextView>
 	</ScrollView>
 </LinearLayout>

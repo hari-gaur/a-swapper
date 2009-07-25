@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="startup_checkbox"></string>
-
 	<string name="app_name">Swapper</string>
-
 	<string-array name="swapsize">
 		<item>1 MB</item>
 		<item>2 MB</item>
@@ -68,5 +65,22 @@
 		<item>80</item>
 		<item>100</item>
 	</string-array>
-
+	<string name="startup_text">
+Thank You for using swapper!\n
+Usage:\n
+-> On to enable swap\n
+-> Off to disable swap\n
+-> MENU button to access advanced settings\n
+If "On" not working on Your phone, try to download busybox (option in menu)\n
+MENU options:\n
+-> Swap\n
+-> -> Create - create swap file (used when autocreate is disabled)\n
+-> -> Reformat - format swap file/partition\n
+-> Configuration\n
+-> -> Settings - set up swap\n
+-> -> Info - get memory/swap information\n
+-> Busybox\n
+-> -> Download - download busybox\n
+-> -> Remove - delete busybox\n
+</string> 
 </resources>
