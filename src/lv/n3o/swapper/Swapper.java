@@ -129,7 +129,7 @@ public class Swapper extends Activity implements OnClickListener {
 				showDialog(DIALOG_YES_NO_MESSAGE);
 			} else if (i.equals("Remove")) {
 				sc.removeBusybox();
-			} else if (i.equals("info")) {
+			} else if (i.equals("Info")) {
 				log.setText("Swappiness: ");
 				log.append(su.exec_o("cat /proc/sys/vm/swappiness"));
 				// structure
