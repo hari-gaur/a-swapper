@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="lv.n3o.swapper" android:versionCode="74" android:versionName="0.1.4b">
+	package="lv.n3o.swapper" android:versionCode="75" android:versionName="0.1.4b">
 	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:allowClearUserData="true" android:persistent="false">
@@ -32,4 +32,5 @@
 		</receiver>
 	</application>
 	<uses-sdk android:minSdkVersion="3" />
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
 </manifest> 
