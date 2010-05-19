@@ -1,4 +1,4 @@
-package lv.n3o.swapper;
+package lv.n3o.swapper2;
 
 
 import java.io.BufferedInputStream;

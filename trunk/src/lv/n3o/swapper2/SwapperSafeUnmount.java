@@ -1,4 +1,4 @@
-package lv.n3o.swapper;
+package lv.n3o.swapper2;
 
 
 import android.content.BroadcastReceiver;
@@ -9,20 +9,19 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 
-public class SwapperSafeRemount extends BroadcastReceiver {
+public class SwapperSafeUnmount extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		SharedPreferences settings = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		Boolean autorun = settings.getBoolean("swapperSafeRemount", true);
+		Boolean autorun = settings.getBoolean("swapperSafeUnmount", true);
 		if (!autorun) {
 			return;
 		}
-		Log.d("Swapper", "Starting safe remount");
+		Log.d("Swapper", "Starting safe unmount");
 		SwapperCommands sc = new SwapperCommands(context);
-		sc.swappiness();
-		sc.swapOn();
+		sc.swapOff();
 	}
 
 }
