@@ -1,4 +1,4 @@
-package lv.n3o.swapper;
+package lv.n3o.swapper2;
 
 
 import java.io.File;
@@ -19,8 +19,7 @@ public class BusyboxComander {
 		c.setRequestMethod("GET");
 		c.setDoOutput(true);
 		c.connect();
-		FileOutputStream f = new FileOutputStream(new File(
-				"/data/data/lv.n3o.swapper/busybox"));
+		FileOutputStream f = new FileOutputStream(new File("/data/data/lv.n3o.swapper2/busybox"));
 		InputStream in = c.getInputStream();
 		byte[] buffer = new byte[1024];
 		int len1 = 0;
